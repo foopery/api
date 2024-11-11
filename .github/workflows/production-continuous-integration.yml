@@ -1,0 +1,14 @@
+name: Production Continuous Integration
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    uses: /common-workflows/.github/workflows/nestjs-ci.yml@main
+    with:
+      is-test: ${{ vars.PROD_IS_TEST }}
+      is-e2e-test: ${{ vars.PROD_IS_E2E_TEST }}
+      is-ci: ${{ vars.PROD_IS_CI }}
+    secrets: inherit

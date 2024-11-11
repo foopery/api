@@ -1,0 +1,10 @@
+name: Production Image Build and Push
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    uses: /common-workflows/.github/workflows/nestjs-image-build-and-push-linux-amd64.yml@main
+    secrets: inherit
