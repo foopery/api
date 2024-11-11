@@ -6,7 +6,7 @@ model Admin {
   loginId         String?   @map("login_id") @db.VarChar() // 로그인 아이디 /^[a-z0-9]+$/
   password        String?   @db.VarChar() // 비밀번호 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/
   name            String?   @db.VarChar() // 이름
-  birthDate       DateTime? @map("birth_date") @db.Date() // 생년월일
+  birthDate       String?   @map("birth_date") // 생년월일
   profileImageUrl String?   @map("profile_image_url") @db.VarChar() // 프로필 이미지 url
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3) // 생성일
   updatedAt       DateTime? @updatedAt @map("updated_at") @db.Timestamptz(3) // 수정일

@@ -1,7 +1,8 @@
-import { IsDate, IsEnum, IsOptional, IsString, Matches } from 'class-validator';
-import { AdminRole, AdminStatus } from './admin.enums';
+import { IsDate, IsEnum, IsString, Matches } from 'class-validator';
 import { RegexpConstant } from '../_utils/constants/regexp.constants';
 import { ApiProperty } from '@nestjs/swagger';
+import { AdminStatus } from './enums/admin.status.enum';
+import { AdminRole } from './enums/admin.role.enum';
 
 export class AdminDto {
     @ApiProperty({ description: '상태' })

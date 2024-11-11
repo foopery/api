@@ -18,4 +18,9 @@ export class AdminMgrRepository {
     async countByLoginId(loginId: string) {
         return this.repository.count({ where: { loginId } });
     }
+
+    async onModuleInit() {
+        const test = await this.repository.findMany();
+        console.log('result', test);
+    }
 }
