@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../../_utils/modules/database/database.service';
-import { AdminMgrCreateInterface } from './interfaces/admin-mgr.create.interface';
+import { AdminMgrCreateInterface } from '../interfaces/admin-mgr.create.interface';
 
 @Injectable()
 export class AdminMgrRepository {

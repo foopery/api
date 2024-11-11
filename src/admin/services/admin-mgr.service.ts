@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AdminMgrProcessor } from './admin-mgr.processor';
-import { AdminMgrCreateInterface } from './interfaces/admin-mgr.create.interface';
+import { AdminMgrProcessor } from '../processors/admin-mgr.processor';
+import { AdminMgrCreateInterface } from '../interfaces/admin-mgr.create.interface';
 import { apiResponse } from '../../_utils/functions/api-response.function';
 import { AdminConstants } from '../admin.constants';
 
@@ -9,7 +9,7 @@ export class AdminMgrService {
     constructor(private processor: AdminMgrProcessor) {}
 
     async create(data: AdminMgrCreateInterface) {
-        const resource = await this.processor.executeCreate(data);
+        const resource = await this.processor.create(data);
         return apiResponse(AdminConstants.CREATE_MESSAGE, resource);
     }
 }

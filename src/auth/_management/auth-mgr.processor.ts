@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthMgrLoginInterface } from './interfaces/auth-mgr.login.interface';
-import { AdminMgrRepository } from '../../admin/_management/admin-mgr.repository';
+import { AdminMgrRepository } from '../../admin/repositories/admin-mgr.repository';
 import { BcryptService } from '../../_utils/modules/bcrypt/bcrypt.service';
 import { AuthCoreValidator } from '../_core/auth-core.validator';
 
