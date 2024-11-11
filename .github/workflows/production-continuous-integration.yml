@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    uses: foopery/common-workflows/.github/workflows/nestjs-ci.yml@main
+    uses: foopery/common-workflows/.github/workflows/nestjs-ci.yml@nestjs
     with:
       is-test: ${{ vars.PROD_IS_TEST }}
       is-e2e-test: ${{ vars.PROD_IS_E2E_TEST }}

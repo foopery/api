@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    uses: foopery/common-workflows/.github/workflows/nestjs-ssh-connection-and-deploy-to-server.yml@main
+    uses: foopery/common-workflows/.github/workflows/nestjs-ssh-connection-and-deploy-to-server.yml@nestjs
     with:
       container-uri: ${{ vars.DEV_CONTAINER_URI }}
       node-env: dev
