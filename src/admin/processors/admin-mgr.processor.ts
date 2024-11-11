@@ -1,9 +1,10 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from '@nestjs/common';
 import { AdminMgrRepository } from '../repositories/admin-mgr.repository';
-import { AdminMgrCreateInterface } from '../interfaces/admin-mgr.create.interface';
+import { AdminMgrCreateInterface } from '../interfaces/admin.mgr.create.interface';
 import { LoggerService } from '../../_utils/modules/logger/logger.service';
 import { BcryptService } from '../../_utils/modules/bcrypt/bcrypt.service';
-import { AdminConstants } from "../admin.constants";
+import { AdminConstant } from '../admin.constant';
+import { AdminMgrFindListInterface } from '../interfaces/admin.mgr.find-list.interface';
 
 @Injectable()
 export class AdminMgrProcessor {
@@ -24,10 +25,18 @@ export class AdminMgrProcessor {
     }
 
     /**
+     * @apiMethod findList
+     * @description 목록 조회
+     * */
+    async findList(data: AdminMgrFindListInterface) {
+        return this.repository.findList(data);
+    }
+
+    /**
      * @description 중복 로그인 아이디가 있을 경우 오류 반환
      * */
     async throwIfLoginIdExists(loginId: string) {
         const loginIdCount = await this.repository.countByLoginId(loginId);
-        if (loginIdCount) throw new ConflictException(AdminConstants.EXISTS_LOGIN_ID_MESSAGE);
+        if (loginIdCount) throw new ConflictException(AdminConstant.EXISTS_LOGIN_ID_MESSAGE);
     }
 }

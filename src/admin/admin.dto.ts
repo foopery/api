@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsString, Matches } from 'class-validator';
+import { IsEnum, IsString, Matches } from 'class-validator';
 import { RegexpConstant } from '../_utils/constants/regexp.constants';
 import { ApiProperty } from '@nestjs/swagger';
 import { AdminStatus } from './enums/admin.status.enum';
@@ -27,9 +27,10 @@ export class AdminDto {
     @IsString()
     name!: string;
 
-    @ApiProperty({ description: '생년월일' })
-    @IsDate()
-    birthDate!: Date;
+    @ApiProperty({ description: '생년월일', example: 'YYYY-MM-DD' })
+    @IsString()
+    @Matches(RegexpConstant.date)
+    birthDate!: string;
 
     @ApiProperty({ description: '프로필 이미지 url' })
     @IsString()
