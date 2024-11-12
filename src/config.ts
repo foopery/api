@@ -8,6 +8,7 @@ export class Config {
 
     /** Data Processing */
     static readonly APP_DATA_PROCESSING_EXPOSE = ['password', 'ci'] as const;
+    static readonly APP_DATA_PROCESSING_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
     /** Multiple Token Option */
     static readonly IS_ADMIN_MULTIPLE_TOKEN = false;
