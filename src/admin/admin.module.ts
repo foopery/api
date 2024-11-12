@@ -13,6 +13,6 @@ import { BcryptModule } from '../_utils/modules/bcrypt/bcrypt.module';
     imports: [BcryptModule],
     controllers: [AdminPublicController, AdminMgrController],
     providers: [AdminPublicService, AdminPublicProcessor, AdminPublicRepository, AdminMgrService, AdminMgrProcessor, AdminMgrRepository],
-    exports: [AdminMgrProcessor, AdminMgrRepository],
+    exports: [AdminMgrProcessor],
 })
 export class AdminModule {}

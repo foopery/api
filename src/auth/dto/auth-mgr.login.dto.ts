@@ -1,5 +1,5 @@
 import { IsString, Matches } from 'class-validator';
-import { RegexpConstant } from '../../../_utils/constants/regexp.constants';
+import { RegexpConstant } from '../../_utils/constants/regexp.constants';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthMgrLoginDto {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AuthMgrProcessor } from './auth-mgr.processor';
-import { AuthMgrLoginInterface } from './interfaces/auth-mgr.login.interface';
+import { AuthMgrProcessor } from '../processors/auth-mgr.processor';
+import { AuthMgrLoginInterface } from '../interfaces/auth-mgr.login.interface';
 import { apiResponse } from '../../_utils/functions/api-response.function';
 import { AuthConstant } from '../auth.constant';
 

@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { AuthMgrLoginInterface } from './interfaces/auth-mgr.login.interface';
-import { AdminMgrRepository } from '../../admin/repositories/admin-mgr.repository';
+import { AuthMgrLoginInterface } from '../interfaces/auth-mgr.login.interface';
 import { BcryptService } from '../../_utils/modules/bcrypt/bcrypt.service';
-import { AuthCoreValidator } from '../_core/auth-core.validator';
 import { AdminMgrProcessor } from '../../admin/processors/admin-mgr.processor';
+import { AuthConstant } from '../auth.constant';
 
 @Injectable()
 export class AuthMgrProcessor {
@@ -16,9 +15,7 @@ export class AuthMgrProcessor {
         private jwtService: JwtService,
         private configService: ConfigService,
         private bcryptService: BcryptService,
-        private coreValidator: AuthCoreValidator,
         private adminProcessor: AdminMgrProcessor,
-        private adminRepository: AdminMgrRepository,
     ) {
         const secretKey = configService.get('ADMIN_ACCESS_TOKEN_SECRET_KEY');
         const expiresIn = configService.get('ADMIN_ACCESS_TOKEN_EXPIRES_IN');
@@ -35,12 +32,12 @@ export class AuthMgrProcessor {
      * 일반 로그인 프로세스
      * */
     async executeLogin(data: AuthMgrLoginInterface) {
-        const admin = await this.adminRepository.findFirstByLoginId(data.loginId);
-        this.coreValidator.throwIfLoginFailed(admin);
+        const admin = await this.adminProcessor.findByLoginIdOrThrowForAuth(data.loginId);
 
         const passwordCompare = await this.bcryptService.comparePassword(data.password, admin.password!);
-        this.coreValidator.throwIfLoginFailed(passwordCompare);
+        if (!passwordCompare) throw new UnauthorizedException(AuthConstant.LOGIN_FAILED_MESSAGE);
 
+        await this.adminProcessor.findOrThrowNotAllowedStatus(admin.id);
         await this.adminProcessor.updateLastLoginAt(admin.id);
 
         return { accessToken: await this.jwtSign(admin.id) };
