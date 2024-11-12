@@ -25,6 +25,9 @@ export class AdminModel {
     @ApiProperty({ description: '프로필 이미지 url' })
     profileImageUrl!: string | null;
 
+    @ApiProperty({ description: '마지막 로그인 일자', example: 'YYYY-MM-DD HH:mm:ss' })
+    lastLoginAt!: Date | null;
+
     @ApiProperty({ description: '생성일', example: 'YYYY-MM-DD HH:mm:ss' })
     createdAt!: Date;
 

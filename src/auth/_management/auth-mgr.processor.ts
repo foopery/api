@@ -5,6 +5,7 @@ import { AuthMgrLoginInterface } from './interfaces/auth-mgr.login.interface';
 import { AdminMgrRepository } from '../../admin/repositories/admin-mgr.repository';
 import { BcryptService } from '../../_utils/modules/bcrypt/bcrypt.service';
 import { AuthCoreValidator } from '../_core/auth-core.validator';
+import { AdminMgrProcessor } from '../../admin/processors/admin-mgr.processor';
 
 @Injectable()
 export class AuthMgrProcessor {
@@ -16,6 +17,7 @@ export class AuthMgrProcessor {
         private configService: ConfigService,
         private bcryptService: BcryptService,
         private coreValidator: AuthCoreValidator,
+        private adminProcessor: AdminMgrProcessor,
         private adminRepository: AdminMgrRepository,
     ) {
         const secretKey = configService.get('ADMIN_ACCESS_TOKEN_SECRET_KEY');
@@ -38,6 +40,8 @@ export class AuthMgrProcessor {
 
         const passwordCompare = await this.bcryptService.comparePassword(data.password, admin.password!);
         this.coreValidator.throwIfLoginFailed(passwordCompare);
+
+        await this.adminProcessor.updateLastLoginAt(admin.id);
 
         return { accessToken: await this.jwtSign(admin.id) };
     }

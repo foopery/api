@@ -8,6 +8,7 @@ model Admin {
   name            String?   @db.VarChar() // 이름
   birthDate       String?   @map("birth_date") // 생년월일
   profileImageUrl String?   @map("profile_image_url") @db.VarChar() // 프로필 이미지 url
+  lastLoginAt     DateTime? @map("last_login_at") @db.Timestamptz(3) // 마지막 로그인 일시
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3) // 생성일
   updatedAt       DateTime? @updatedAt @map("updated_at") @db.Timestamptz(3) // 수정일
   deletedAt       DateTime? @map("deleted_at") @db.Timestamptz(3) // 삭제일
