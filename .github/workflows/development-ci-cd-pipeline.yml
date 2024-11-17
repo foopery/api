@@ -1,0 +1,21 @@
+name: Development CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['develop']
+
+jobs:
+  step1:
+    uses: ./.github/workflows/development-continuous-integration.yml
+    secrets: inherit
+
+  step2:
+    uses: ./.github/workflows/development-image-build-and-push.yml
+    needs: step1
+    secrets: inherit
+
+  step3:
+    uses: ./.github/workflows/development-ssh-connection-and-deploy-to-server.yml
+    needs: step2
+    secrets: inherit

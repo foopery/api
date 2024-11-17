@@ -1,0 +1,10 @@
+Dockerfile
+.dockerignore
+node_modules
+logs
+dist
+test
+.github
+.git
+.idea
+envs

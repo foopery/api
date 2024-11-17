@@ -1,0 +1,14 @@
+name: Development Continuous Integration
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    uses: foopery/common-workflows/.github/workflows/nestjs-ci.yml@nestjs
+    with:
+      is-test: ${{ vars.DEV_IS_TEST }}
+      is-e2e-test: ${{ vars.DEV_IS_E2E_TEST }}
+      is-ci: ${{ vars.DEV_IS_CI }}
+    secrets: inherit

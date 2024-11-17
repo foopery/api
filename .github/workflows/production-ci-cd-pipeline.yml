@@ -1,0 +1,19 @@
+name: Production CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  step1:
+    uses: ./.github/workflows/production-continuous-integration.yml
+    secrets: inherit
+
+  step2:
+    uses: ./.github/workflows/production-image-build-and-push.yml
+    needs: step1
+    secrets: inherit
+
+  step3:
+    uses: ./.github/workflows/production-ssh-connection-and-deploy-to-server.yml
+    needs: step2
+    secrets: inherit

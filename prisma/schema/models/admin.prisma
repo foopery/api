@@ -1,0 +1,17 @@
+// 관리자
+model Admin {
+  id              Int       @id @default(autoincrement()) // 관리자 아이디
+  status          Int       @db.SmallInt // 상태 여부
+  role            Int       @db.SmallInt // 권한
+  loginId         String?   @map("login_id") @db.VarChar() // 로그인 아이디 /^[a-z0-9]+$/
+  password        String?   @db.VarChar() // 비밀번호 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/
+  name            String?   @db.VarChar() // 이름
+  birthDate       String?   @map("birth_date") // 생년월일
+  profileImageUrl String?   @map("profile_image_url") @db.VarChar() // 프로필 이미지 url
+  lastLoginAt     DateTime? @map("last_login_at") @db.Timestamptz(3) // 마지막 로그인 일시
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3) // 생성일
+  updatedAt       DateTime? @updatedAt @map("updated_at") @db.Timestamptz(3) // 수정일
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz(3) // 삭제일
+
+  @@map("admin")
+}
