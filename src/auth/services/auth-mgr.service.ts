@@ -1,16 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { AuthMgrProcessor } from '../processors/auth-mgr.processor';
-import { AuthMgrLoginInterface } from '../interfaces/auth-mgr.login.interface';
-import { apiResponse } from '../../_utils/functions/api-response.function';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { BcryptService } from '../../_utils/modules/bcrypt/bcrypt.service';
+import { AdminMgrService } from '../../admin/services/admin-mgr.service';
 import { AuthConstant } from '../auth.constant';
+import { AuthLoginDto } from '../dto/auth.login.dto';
+import { EnvService } from '../../_utils/modules/env/env.service';
 
 @Injectable()
 export class AuthMgrService {
-    constructor(private processor: AuthMgrProcessor) {}
+    constructor(
+        private jwtService: JwtService,
+        private envService: EnvService,
+        private bcryptService: BcryptService,
+        private adminMgrService: AdminMgrService,
+    ) {}
 
-    /** 일반 로그인 */
-    async login(data: AuthMgrLoginInterface) {
-        const { accessToken } = await this.processor.executeLogin(data);
-        return apiResponse(AuthConstant.LOGIN_SUCCESS_MESSAGE, { accessToken });
+    /**
+     * @ApiMethod login
+     * 일반 로그인 프로세스
+     * */
+    async executeLogin(data: AuthLoginDto) {
+        const admin = await this.adminMgrService.findByLoginIdOrThrowForAuth(data.loginId);
+
+        const passwordCompare = await this.bcryptService.compare(data.password, admin.password!, {
+            secretKey: this.envService.get('ADMIN_PASSWORD_SECRET_KEY') as string,
+        });
+        if (!passwordCompare) throw new UnauthorizedException(AuthConstant.LOGIN_FAILED_MESSAGE);
+
+        await this.adminMgrService.findOrThrowNotAllowedStatus(admin.id);
+        await this.adminMgrService.updateLastLoginAt(admin.id);
+
+        return { accessToken: await this.jwtSign(admin.id) };
+    }
+
+    /** JWT 토큰 생성 */
+    async jwtSign(id: number) {
+        return this.jwtService.signAsync(
+            { id, isAdmin: true },
+            { secret: this.envService.get('ADMIN_PASSWORD_SECRET_KEY'), expiresIn: this.envService.get('ADMIN_ACCESS_TOKEN_EXPIRES_IN') },
+        );
     }
 }

@@ -1,4 +1,4 @@
 import { IntersectionType, OmitType, PartialType } from '@nestjs/swagger';
-import { AdminDto } from '../admin.dto';
+import { AdminEntity } from '../admin.entity';
 
-export class AdminMgrUpdateDto extends IntersectionType(PartialType(OmitType(AdminDto, ['password']))) {}
+export class AdminMgrUpdateDto extends IntersectionType(PartialType(OmitType(AdminEntity, ['password', 'deletedAt']))) {}

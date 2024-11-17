@@ -1,6 +1,5 @@
 import { ModuleRef, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 import * as nodeCloudflare from 'node_cloudflare';
 import helmet from 'helmet';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -8,6 +7,7 @@ import { LoggerService } from './_utils/modules/logger/logger.service';
 import { AppNodeEnv } from './_utils/types/app-node-env.type';
 import { Swagger } from './_utils/swagger/swagger';
 import { Config } from './config';
+import { EnvService } from './_utils/modules/env/env.service';
 
 export let globalModuleRef: ModuleRef;
 
@@ -21,9 +21,9 @@ async function bootstrap() {
     app.useLogger(app.get(LoggerService));
     app.useBodyParser('json', { limit: '5mb' });
 
-    const configService = app.get(ConfigService);
+    const envService = app.get(EnvService);
 
-    const nodeEnv = configService.get<AppNodeEnv>('NODE_ENV', 'local');
+    const nodeEnv = envService.get<AppNodeEnv>('NODE_ENV', 'local');
     if (nodeEnv !== 'local') app.use(helmet());
 
     // CORS 설정
@@ -35,7 +35,7 @@ async function bootstrap() {
     app.set('trust proxy', true);
 
     // 서버 실행
-    await app.listen(configService.get<number>('PORT')!, '0.0.0.0');
+    await app.listen(envService.get<number>('PORT')!, '0.0.0.0');
 }
 
 nodeCloudflare.load((err, fsErr) => bootstrap());

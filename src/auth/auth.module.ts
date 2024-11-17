@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthMgrService } from './services/auth-mgr.service';
+import { AuthMgrPresenter } from './presenters/auth-mgr.presenter';
 import { AuthMgrController } from './controllers/auth-mgr.controller';
-import { AuthMgrProcessor } from './processors/auth-mgr.processor';
+import { AuthMgrService } from './services/auth-mgr.service';
 import { AdminModule } from '../admin/admin.module';
 import { BcryptModule } from '../_utils/modules/bcrypt/bcrypt.module';
+import { AuthMgrModule } from './modules/auth-mgr.module';
 
 @Module({
-    imports: [JwtModule, AdminModule, BcryptModule],
-    controllers: [AuthMgrController],
-    providers: [AuthMgrService, AuthMgrProcessor],
+    imports: [AuthMgrModule],
+    controllers: [],
+    providers: [],
 })
 export class AuthModule {}

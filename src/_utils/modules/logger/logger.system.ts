@@ -8,13 +8,14 @@ import { LoggerConstant } from './logger.constant';
 import { LoggerFormat } from './logger.format';
 import { LogLevel } from './logger.types';
 import { AppNodeEnv } from '../../types/app-node-env.type';
+import { EnvService } from '../env/env.service';
 
 @Injectable()
 export class LoggerSystem {
-    private env = this.config.get<AppNodeEnv>('NODE_ENV', 'local');
+    private env = this.envService.get<AppNodeEnv>('NODE_ENV', 'local');
 
     constructor(
-        private config: ConfigService,
+        private envService: EnvService,
         private format: LoggerFormat,
     ) {}
 

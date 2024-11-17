@@ -8,7 +8,7 @@ export function apiResponse<T>(message: string, data?: T | null, meta?: ApiMetaI
     if (data === undefined) data = null;
 
     /** 메타 데이터가 없을 경우 반환 케이스 */
-    if (!meta) return { code: 0, message, data };
+    if (!meta) return { message, data };
 
     /** 전체 반환 케이스 */
     return { message, data, meta };

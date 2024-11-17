@@ -9,4 +9,5 @@ export class AdminConstant {
     public static readonly CREATE_MESSAGE = '관리자 계정이 정상 생성되었습니다.';
     public static readonly UPDATE_MESSAGE = '관리자 계정이 정상 수정되었습니다.';
     public static readonly FIND_LIST_MESSAGE = '관리자 목록 조회가 완료되었습니다.';
+    public static readonly FIND_MESSAGE = '관리자 정보 조회가 완료되었습니다.';
 }

@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../../_utils/modules/database/database.service';
-import { AdminMgrCreateInterface } from '../interfaces/admin-mgr.create.interface';
-import { AdminMgrFindListInterface } from '../interfaces/admin-mgr.find-list.interface';
 import { Prisma } from '@prisma/client';
 import { AdminMgrFindListSort } from '../enums/admin-mgr.find-list.sort.enum';
 import { getFindListMetadata } from '../../_utils/functions/get-find-list.metadata.function';
-import { AdminMgrUpdateInterface } from '../interfaces/admin-mgr.update.interface';
+import { AdminMgrCreateDto } from '../dto/admin-mgr.create.dto';
+import { AdminMgrUpdateDto } from '../dto/admin-mgr.update.dto';
+import { AdminMgrFindListDto } from '../dto/admin-mgr.find-list.dto';
 
 @Injectable()
 export class AdminMgrRepository {
     private repository = this.database.admin;
     constructor(private database: DatabaseService) {}
 
-    async create(data: AdminMgrCreateInterface) {
+    async create(data: AdminMgrCreateDto) {
         return this.repository.create({ data });
     }
 
-    async update(id: number, data: AdminMgrUpdateInterface) {
+    async update(id: number, data: AdminMgrUpdateDto) {
         return this.repository.update({ where: { id }, data });
     }
 
@@ -29,14 +29,18 @@ export class AdminMgrRepository {
     }
 
     async findUnique(id: number) {
-        return this.repository.findUnique({ where: { id } });
+        return this.repository.findUnique({ where: { id, deletedAt: null } });
     }
 
     async countByLoginId(loginId: string) {
-        return this.repository.count({ where: { loginId } });
+        return this.repository.count({ where: { loginId, deletedAt: null } });
     }
 
-    async findList(data: AdminMgrFindListInterface) {
+    async count() {
+        return this.repository.count({ where: { deletedAt: null } });
+    }
+
+    async findList(data: AdminMgrFindListDto) {
         const options = Prisma.validator<Prisma.AdminFindManyArgs>()({
             where: {},
             take: data.take,

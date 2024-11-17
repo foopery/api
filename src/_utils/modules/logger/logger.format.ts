@@ -2,19 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { LEVEL } from 'triple-beam';
 import { format } from 'winston';
 import * as chalk from 'chalk';
-import { ConfigService } from '@nestjs/config';
 import { ClsService } from 'nestjs-cls';
-import { Config } from '../../../config';
 import { LoggerConstant } from './logger.constant';
+import { EnvService } from '../env/env.service';
+import { Config } from '../../../config';
 
 @Injectable()
 export class LoggerFormat {
     constructor(
-        private config: ConfigService,
+        private envService: EnvService,
         private cls: ClsService,
     ) {}
 
-    private timezone = this.config.get<string>('TZ');
+    private timezone = this.envService.get<string>('TZ');
 
     public readonly console = format.combine(
         format.timestamp({ format: `YYYY-MM-DD HH:mm:ss.SSS` }),
