@@ -53,6 +53,7 @@ export class AdminMgrService {
      * */
     async update(id: number, data: AdminMgrUpdateDto) {
         await this.findOrThrowNotFound(id);
+        if (data.password) data.password = await this.hashPassword(data.password);
         return this.repository.update(id, data);
     }
 
